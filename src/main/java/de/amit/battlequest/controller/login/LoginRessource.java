@@ -13,11 +13,27 @@ public class LoginRessource {
 	@Autowired
 	private PlayerRepository playerRepository;
 
+	/*
 	@PostMapping
-	public String getToken(@RequestBody Player player) {		//how does one build the player? do i grab the username and pw and have an incomplete user?
+	public String getToken(@RequestBody Player player) {
 		System.out.println(player.getId());
 		System.out.println(player.getPassword());
 		return player.getId();
+	}
+	*/
+
+	//
+
+	@PostMapping
+	public void createUser(@RequestBody Player player){
+		Player p = playerRepository.findById(player.getId()).orElse(null);
+		if (p == null) {
+			playerRepository.save(player);
+			System.out.println("success");
+		}
+		else {
+			System.out.println("already exists");
+		}
 	}
 	@PutMapping("/{id}")
 	public void modifyUsername(@PathVariable String id, @RequestBody String newId) {
@@ -25,6 +41,25 @@ public class LoginRessource {
 		if(player != null){
 			player.setId(newId);
 			playerRepository.save(player);
+			System.out.println("success");
+		}
+		else {
+			System.out.println("doesn't exist");
+		}
+	}
+	@GetMapping("/{id}")
+	public Player getUser(@PathVariable String id){
+		return playerRepository.findById(id).orElse(null);
+	}
+	@DeleteMapping("/{id}")
+	public void deleteUser(@PathVariable String id) {
+		Player player = playerRepository.findById(id).orElse(null);
+		if(player != null){
+			playerRepository.delete(player);
+			System.out.println("success");
+		}
+		else {
+			System.out.println("doesn't exist");
 		}
 	}
 }
