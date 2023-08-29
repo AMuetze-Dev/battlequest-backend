@@ -13,7 +13,11 @@ public class Player {
     private int points;
     private String password;        // not plain text
 
-    //
+    public Player() {}
+    public Player(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
 
     public Long getId() {
         return id;
