@@ -25,21 +25,42 @@ public class LoginRessource {
 	//
 
 	@PostMapping
-	public void createUser(@RequestBody Player player){
-		Player p = playerRepository.findById(player.getId()).orElse(null);
+	public void createUser(@RequestBody String username){
+		System.out.println("Creating user: " + username);
+		Player p = playerRepository.findByUsername(username);
+		System.out.println("test");
 		if (p == null) {
-			playerRepository.save(player);
+			Player ply = new Player();
+			ply.setUsername(username);
+			ply.setPoints(0);
+			playerRepository.save(ply);
 			System.out.println("success");
+			System.out.println("User ID: " + ply.getId());
 		}
 		else {
 			System.out.println("already exists");
 		}
 	}
+	@PostMapping("/{id}")
+	public void setPassword(@PathVariable Long id, @RequestBody String password) {
+		Player p = playerRepository.findById(id).orElse(null);
+		System.out.println("Changing password of: " + p.getUsername());
+		if(p != null){
+			p.setPassword(password);
+			playerRepository.save(p);
+			System.out.println("success");
+		}
+		else {
+			System.out.println("error");
+		}
+	}
 	@PutMapping("/{id}")
-	public void modifyUsername(@PathVariable String id, @RequestBody String newId) {
+	public void modifyUsername(@PathVariable Long id, @RequestBody String newUsername) {
 		Player player = playerRepository.findById(id).orElse(null);
+		System.out.println("Changing username of: " + player.getUsername());
 		if(player != null){
-			player.setId(newId);
+			player.setUsername(newUsername);
+			System.out.println("New username: " + player.getUsername());
 			playerRepository.save(player);
 			System.out.println("success");
 		}
@@ -48,12 +69,13 @@ public class LoginRessource {
 		}
 	}
 	@GetMapping("/{id}")
-	public Player getUser(@PathVariable String id){
+	public Player getUser(@PathVariable Long id){
 		return playerRepository.findById(id).orElse(null);
 	}
 	@DeleteMapping("/{id}")
-	public void deleteUser(@PathVariable String id) {
+	public void deleteUser(@PathVariable Long id) {
 		Player player = playerRepository.findById(id).orElse(null);
+		System.out.println("Deleting: " + player.getUsername());
 		if(player != null){
 			playerRepository.delete(player);
 			System.out.println("success");
