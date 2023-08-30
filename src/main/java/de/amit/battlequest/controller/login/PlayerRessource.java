@@ -43,7 +43,7 @@ public class PlayerRessource {
 		Player player = getUser(credentials.getUsername());
 		if(player == null)
 			return new Response("The requested username is invalid.", false);
-		if(Objects.equals(credentials.getPassword(), player.getPassword()))
+		if(!credentials.getPassword().equals(player.getPassword()))
 			return new Response("The stated password does not match the login data.", false);
 		return new Response("Login was successful", true);
 	}
