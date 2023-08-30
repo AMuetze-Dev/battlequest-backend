@@ -26,7 +26,7 @@ public class SessionRessource {
         return new Response("Session was created successfully", true);
     }
     @PutMapping("/{id}")
-    public Response changeMaster(@PathVariable Long id, @RequestBody Player master){
+    public Response changeMaster(@PathVariable String id, @RequestBody Player master){
         Session session = getSession(id);
         if(session == null){
             return new Response("This session does not exist.", false);
@@ -42,16 +42,15 @@ public class SessionRessource {
         return new Response("Master was changed successfully", true);
     }
     @GetMapping("/{id}")
-    public Session getSession(@PathVariable Long id){
+    public Session getSession(@PathVariable String id){
         return sessionRepository.findById(id).orElse(null);
     }
     @GetMapping
     public Session getSession(@RequestBody Player master){
-        // sessionRepository.findByMaster(master.getId());
-        return null;
+        return sessionRepository.findByMaster(master);
     }
     @DeleteMapping("/{id}")
-    public Response deleteSession(@PathVariable Long id){
+    public Response deleteSession(@PathVariable String id){
         Session session = getSession(id);
         if(session == null)
             return new Response("Session does not exist.", false);
