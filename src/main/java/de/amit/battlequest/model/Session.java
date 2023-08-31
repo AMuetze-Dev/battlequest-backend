@@ -6,11 +6,11 @@ import jakarta.persistence.*;
 @Table(name = "sessions")
 public class Session {
     @Id
+    @Column(length=8)
     //@GeneratedValue(strategy = GenerationType.IDENTITY)
     private String sessionId;
     @ManyToOne
     @JoinColumn(name = "master_id")
-    @Column(length=8)
     private Player master;
 
     public Session () {
