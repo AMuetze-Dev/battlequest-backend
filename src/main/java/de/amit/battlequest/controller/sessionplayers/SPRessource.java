@@ -9,6 +9,7 @@ import de.amit.battlequest.model.SessionIdentity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -31,8 +32,15 @@ public class SPRessource {
         spRepository.save(sessionIdentity);
         return new Response("Player " + username + " was added to Session " + id + " successfully.", true);
     }
-    @PutMapping("/{id]")
-    public Response changeSession(@PathVariable String id, @RequestBody String username){
+    @DeleteMapping
+    public Response deletePlayer(@RequestBody String username){
+        if(checkPlayerSession(playerRessource.getUser(username)) == null)
+            return new Response("This player was not assigned to any session.", false);
+        spRepository.delete(spRepository.findByPlayer(playerRessource.getUser(username)));
+        return new Response("Player was successfully kicked out of the session.", true);
+    }
+    @PutMapping("/{id}")
+    public Response setSession(@PathVariable String id, @RequestBody String username){
         if(checkValidity(id, username) == false)
             return new Response("Session or Player are invalid.", false);
         if(checkPlayerSession(playerRessource.getUser(username)) == null)
@@ -47,12 +55,16 @@ public class SPRessource {
     }
     @GetMapping
     public Session checkPlayerSession(@RequestBody Player player){
-        System.out.println(player.getId());
         return spRepository.findByPlayer(player) == null ? null : spRepository.findByPlayer(player).getSession();
     }
     @GetMapping("/{id}")
-    public List<SessionIdentity> checkSession(@PathVariable String id){
-        return spRepository.findBySession(sessionRessource.getSession(id));
+    public List<Player> checkSession(@PathVariable String id){
+        List<SessionIdentity> sessionList = spRepository.findBySession(sessionRessource.getSession(id));
+        List<Player> playerList = new ArrayList<>();
+        for(SessionIdentity object : sessionList){
+            playerList.add(object.getPlayer());
+        }
+        return playerList;
     }
     public boolean checkValidity(String id, String username){
         if(sessionRessource.getSession(id) == null || playerRessource.getUser(username) == null)
