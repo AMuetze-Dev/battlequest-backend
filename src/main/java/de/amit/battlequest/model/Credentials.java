@@ -21,4 +21,8 @@ public class Credentials {
 		this.username = username;
 	}
 
+	public Player createPlayer() {
+		return new Player(username, password);
+	}
+
 }
