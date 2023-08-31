@@ -16,18 +16,15 @@ public class SessionRessource {
     private PlayerRessource playerRessource;
 
     @PostMapping
-    public Response createSession(@RequestBody Long masterId){
-        Player master = playerRessource.getPlayerRepository().getById(masterId);
-        if(getSession(master) != null)
-            return new Response("This user is already the master of a session.", false);
+    public Response createSession(){
         Session session = new Session();
-        session.setMaster(master);
         sessionRepository.save(session);
         return new Response("Session was created successfully", true);
     }
-    @PutMapping("/{id}")
-    public Response changeMaster(@PathVariable String id, @RequestBody Player master){
+    @PutMapping("/master/set={id}")
+    public Response setMaster1(@PathVariable String id, @RequestBody String username){
         Session session = getSession(id);
+        Player master = playerRessource.getUser(username);
         if(session == null){
             return new Response("This session does not exist.", false);
         }
@@ -40,6 +37,15 @@ public class SessionRessource {
         session.setMaster(master);
         sessionRepository.save(session);
         return new Response("Master was changed successfully", true);
+    }
+    @DeleteMapping("/master/delete={id}")
+    public Response removeMaster(@PathVariable String id){
+        Session session = getSession(id);
+        if(session.getMaster()==null)
+            return new Response("There is no master in this session", false);
+        session.setMaster(null);
+        sessionRepository.save(session);
+        return new Response("Master was removed successfully", true);
     }
     @GetMapping("/{id}")
     public Session getSession(@PathVariable String id){
