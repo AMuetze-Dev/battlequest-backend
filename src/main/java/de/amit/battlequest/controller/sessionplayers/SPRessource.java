@@ -26,7 +26,7 @@ public class SPRessource {
     public Response addPlayer(@PathVariable String id, @RequestBody String username){
         if(checkValidity(id, username) == false)
             return new Response("Session or Player are invalid.", false);
-        if(checkPlayerSession(playerRessource.getUser(username)) != null)
+        if(getSession(playerRessource.getUser(username)) != null)
             return new Response("That Player is already in a session.", false);
         SessionIdentity sessionIdentity= new SessionIdentity(sessionRessource.getSession(id), playerRessource.getUser(username));
         spRepository.save(sessionIdentity);
@@ -34,7 +34,7 @@ public class SPRessource {
     }
     @DeleteMapping
     public Response deletePlayer(@RequestBody String username){
-        if(checkPlayerSession(playerRessource.getUser(username)) == null)
+        if(getSession(playerRessource.getUser(username)) == null)
             return new Response("This player was not assigned to any session.", false);
         spRepository.delete(spRepository.findByPlayer(playerRessource.getUser(username)));
         return new Response("Player was successfully kicked out of the session.", true);
@@ -43,9 +43,9 @@ public class SPRessource {
     public Response setSession(@PathVariable String id, @RequestBody String username){
         if(checkValidity(id, username) == false)
             return new Response("Session or Player are invalid.", false);
-        if(checkPlayerSession(playerRessource.getUser(username)) == null)
+        if(getSession(playerRessource.getUser(username)) == null)
             return new Response("That Player hasn't been assigned a session.", false);
-        if(checkPlayerSession(playerRessource.getUser(username)).getSessionId() == id){
+        if(getSession(playerRessource.getUser(username)).getSessionId() == id){
             return new Response("That player is already in the requested session.", false);
         }
         SessionIdentity sessionIdentity = spRepository.findByPlayer(playerRessource.getUser(username));
@@ -54,11 +54,11 @@ public class SPRessource {
         return new Response("Player " + username + " was moved to Session " + id + " successfully.", true);
     }
     @GetMapping
-    public Session checkPlayerSession(@RequestBody Player player){
+    public Session getSession(@RequestBody Player player){
         return spRepository.findByPlayer(player) == null ? null : spRepository.findByPlayer(player).getSession();
     }
     @GetMapping("/{id}")
-    public List<Player> checkSession(@PathVariable String id){
+    public List<Player> getPlayers(@PathVariable String id){
         List<SessionIdentity> sessionList = spRepository.findBySession(sessionRessource.getSession(id));
         List<Player> playerList = new ArrayList<>();
         for(SessionIdentity object : sessionList){

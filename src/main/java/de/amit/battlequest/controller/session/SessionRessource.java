@@ -22,7 +22,7 @@ public class SessionRessource {
         return new Response("Session was created successfully", true);
     }
     @PutMapping("/master/set={id}")
-    public Response setMaster1(@PathVariable String id, @RequestBody String username){
+    public Response setMaster(@PathVariable String id, @RequestBody String username){
         Session session = getSession(id);
         Player master = playerRessource.getUser(username);
         if(session == null){
@@ -39,7 +39,7 @@ public class SessionRessource {
         return new Response("Master was changed successfully", true);
     }
     @DeleteMapping("/master/delete={id}")
-    public Response removeMaster(@PathVariable String id){
+    public Response deleteMaster(@PathVariable String id){
         Session session = getSession(id);
         if(session.getMaster()==null)
             return new Response("There is no master in this session", false);
