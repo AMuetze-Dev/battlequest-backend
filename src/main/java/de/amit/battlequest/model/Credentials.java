@@ -5,6 +5,10 @@ public class Credentials {
 	private String username;
 	private String password;
 
+	public Player createPlayer() {
+		return new Player(username, password);
+	}
+
 	public String getPassword() {
 		return password;
 	}
@@ -19,10 +23,6 @@ public class Credentials {
 
 	public void setUsername(String username) {
 		this.username = username;
-	}
-
-	public Player createPlayer() {
-		return new Player(username, password);
 	}
 
 }
