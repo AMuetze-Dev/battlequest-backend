@@ -15,6 +15,8 @@ public class SessionRessource {
     @Autowired
     private PlayerRessource playerRessource;
 
+    //
+
     @PostMapping
     public Response createSession(){
         Session session = new Session();
