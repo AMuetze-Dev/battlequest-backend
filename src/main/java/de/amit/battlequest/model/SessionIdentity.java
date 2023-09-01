@@ -15,25 +15,36 @@ public class SessionIdentity{
     @JoinColumn(name = "player_id")
     private Player player;
 
+    //
+
     public SessionIdentity() { }
     public SessionIdentity(Session session, Player player){ this.session = session; this.player = player; }
+
+    //
+
+    public Long getId() {
+        return id;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
 
     public Session getSession() {
         return session;
     }
-    public void setSession(Session session) {
-        this.session = session;
+
+    //
+
+    public void setId(Long id) {
+        this.id = id;
     }
-    public Player getPlayer() {
-        return player;
-    }
+
     public void setPlayer(Player player) {
         this.player = player;
     }
-    public Long getId() {
-        return id;
-    }
-    public void setId(Long id) {
-        this.id = id;
+
+    public void setSession(Session session) {
+        this.session = session;
     }
 }

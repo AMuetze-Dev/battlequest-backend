@@ -22,6 +22,8 @@ public class SPRessource {
     @Autowired
     private PlayerRessource playerRessource;
 
+    //
+
     @PostMapping("/{id}")
     public Response addPlayer(@PathVariable String id, @RequestBody String username){
         if(checkValidity(id, username) == false)
@@ -30,8 +32,17 @@ public class SPRessource {
             return new Response("That Player is already in a session.", false);
         SessionIdentity sessionIdentity= new SessionIdentity(sessionRessource.getSession(id), playerRessource.getUser(username));
         spRepository.save(sessionIdentity);
+        if(!sessionRessource.hasMaster(id))
+            sessionRessource.getSession(id).setMaster(sessionIdentity.getPlayer());
         return new Response("Player " + username + " was added to Session " + id + " successfully.", true);
     }
+
+    public boolean checkValidity(String id, String username){
+        if(sessionRessource.getSession(id) == null || playerRessource.getUser(username) == null)
+            return false;
+        return true;
+    }
+
     @DeleteMapping
     public Response deletePlayer(@RequestBody String username){
         if(getSession(playerRessource.getUser(username)) == null)
@@ -39,6 +50,22 @@ public class SPRessource {
         spRepository.delete(spRepository.findByPlayer(playerRessource.getUser(username)));
         return new Response("Player was successfully kicked out of the session.", true);
     }
+
+    @GetMapping("/{id}")
+    public List<Player> getPlayers(@PathVariable String id){
+        List<SessionIdentity> sessionList = spRepository.findBySession(sessionRessource.getSession(id));
+        List<Player> playerList = new ArrayList<>();
+        for(SessionIdentity object : sessionList){
+            playerList.add(object.getPlayer());
+        }
+        return playerList;
+    }
+
+    @GetMapping
+    public Session getSession(@RequestBody Player player){
+        return spRepository.findByPlayer(player) == null ? null : spRepository.findByPlayer(player).getSession();
+    }
+
     @PutMapping("/{id}")
     public Response setSession(@PathVariable String id, @RequestBody String username){
         if(checkValidity(id, username) == false)
@@ -52,23 +79,5 @@ public class SPRessource {
         sessionIdentity.setSession(sessionRessource.getSession(id));
         spRepository.save(sessionIdentity);
         return new Response("Player " + username + " was moved to Session " + id + " successfully.", true);
-    }
-    @GetMapping
-    public Session getSession(@RequestBody Player player){
-        return spRepository.findByPlayer(player) == null ? null : spRepository.findByPlayer(player).getSession();
-    }
-    @GetMapping("/{id}")
-    public List<Player> getPlayers(@PathVariable String id){
-        List<SessionIdentity> sessionList = spRepository.findBySession(sessionRessource.getSession(id));
-        List<Player> playerList = new ArrayList<>();
-        for(SessionIdentity object : sessionList){
-            playerList.add(object.getPlayer());
-        }
-        return playerList;
-    }
-    public boolean checkValidity(String id, String username){
-        if(sessionRessource.getSession(id) == null || playerRessource.getUser(username) == null)
-            return false;
-        return true;
     }
 }

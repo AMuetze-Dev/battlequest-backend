@@ -15,12 +15,49 @@ public class SessionRessource {
     @Autowired
     private PlayerRessource playerRessource;
 
-    @PostMapping
+    //
+
+    @PostMapping("/create")
     public Response createSession(){
         Session session = new Session();
         sessionRepository.save(session);
         return new Response("Session was created successfully", true);
     }
+
+    @DeleteMapping("/master/delete={id}")
+    public Response deleteMaster(@PathVariable String id){
+        Session session = getSession(id);
+        if(session.getMaster()==null)
+            return new Response("There is no master in this session", false);
+        session.setMaster(null);
+        sessionRepository.save(session);
+        return new Response("Master was removed successfully", true);
+    }
+
+    @DeleteMapping("/delete={id}")
+    public Response deleteSession(@PathVariable String id){
+        Session session = getSession(id);
+        if(session == null)
+            return new Response("Session does not exist.", false);
+        sessionRepository.delete(session);
+        return new Response("Session was deleted successfully", true);
+    }
+
+    @GetMapping("/{id}")
+    public Session getSession(@PathVariable String id){
+        return sessionRepository.findById(id).orElse(null);
+    }
+
+    @GetMapping
+    public Session getSession(@RequestBody Player master){
+        return sessionRepository.findByMaster(master);
+    }
+
+    @GetMapping("/master/{id}")
+    public boolean hasMaster(@PathVariable String id){
+        return sessionRepository.findById(id).orElse(null).getMaster() == null ? false : true;
+    }
+
     @PutMapping("/master/set={id}")
     public Response setMaster(@PathVariable String id, @RequestBody String username){
         Session session = getSession(id);
@@ -37,30 +74,5 @@ public class SessionRessource {
         session.setMaster(master);
         sessionRepository.save(session);
         return new Response("Master was changed successfully", true);
-    }
-    @DeleteMapping("/master/delete={id}")
-    public Response deleteMaster(@PathVariable String id){
-        Session session = getSession(id);
-        if(session.getMaster()==null)
-            return new Response("There is no master in this session", false);
-        session.setMaster(null);
-        sessionRepository.save(session);
-        return new Response("Master was removed successfully", true);
-    }
-    @GetMapping("/{id}")
-    public Session getSession(@PathVariable String id){
-        return sessionRepository.findById(id).orElse(null);
-    }
-    @GetMapping
-    public Session getSession(@RequestBody Player master){
-        return sessionRepository.findByMaster(master);
-    }
-    @DeleteMapping("/{id}")
-    public Response deleteSession(@PathVariable String id){
-        Session session = getSession(id);
-        if(session == null)
-            return new Response("Session does not exist.", false);
-        sessionRepository.delete(session);
-        return new Response("Session was deleted successfully", true);
     }
 }
