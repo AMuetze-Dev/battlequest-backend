@@ -1,5 +1,6 @@
 package de.amit.battlequest.controller.login;
 
+import de.amit.battlequest.model.Team;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -114,5 +115,15 @@ public class PlayerRessource {
 		player.setPoints(0);
 		playerRepository.save(player);
 		return new Response("Points were reset successfully.", true);
+	}
+
+	@PutMapping("/team/{id}")
+	public Response setTeam(@PathVariable Long id, @RequestBody Team team) {
+		Player player = playerRepository.findById(id).orElse(null);
+		if(player == null)
+			return new Response("The requested player is not available.", false);
+		player.setTeam(team);
+		playerRepository.save(player);
+		return new Response(player.getNickname() + " was successfully assigned to Team " + team.getName(), true);
 	}
 }

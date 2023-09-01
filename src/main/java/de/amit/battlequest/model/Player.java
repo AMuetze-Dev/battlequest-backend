@@ -1,11 +1,6 @@
 package de.amit.battlequest.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "players")
@@ -13,6 +8,8 @@ public class Player {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	@JoinColumn(name = "team_id")
+	private Team team;
 	@Column(length = 32)
 	private String username;
 	@Column(length = 32)
@@ -28,6 +25,8 @@ public class Player {
 		this.password = password;
 	}
 
+	//
+
 	public Long getId() {
 		return id;
 	}
@@ -41,6 +40,8 @@ public class Player {
 	public int getPoints() {
 		return points;
 	}
+
+	public Team getTeam() { return team; }
 
 	public String getUsername() {
 		return username;
@@ -59,6 +60,8 @@ public class Player {
 	public void setPoints(int points) {
 		this.points = points;
 	}
+
+	public void setTeam(Team team) { this.team = team; }
 
 	public void setUsername(String username) {
 		this.username = username;
