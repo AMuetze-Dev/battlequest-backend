@@ -21,7 +21,7 @@ public class PlayerRessource {
 	@Autowired
 	private PlayerRepository playerRepository;
 
-	@GetMapping("/changePassword/{id}")
+	@GetMapping("/password/{id}")
 	public Response changePassword(@PathVariable Long id, @RequestBody String newPassword){
 		//TODO: make sure they are validated first? @Aaron: where?
 		Player player = playerRepository.findById(id).orElse(null);

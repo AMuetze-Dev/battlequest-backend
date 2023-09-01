@@ -17,7 +17,7 @@ public class SessionRessource {
 
     //
 
-    @PostMapping
+    @PostMapping("/create")
     public Response createSession(){
         Session session = new Session();
         sessionRepository.save(session);
@@ -34,7 +34,7 @@ public class SessionRessource {
         return new Response("Master was removed successfully", true);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete={id}")
     public Response deleteSession(@PathVariable String id){
         Session session = getSession(id);
         if(session == null)
@@ -53,7 +53,7 @@ public class SessionRessource {
         return sessionRepository.findByMaster(master);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/master/{id}")
     public boolean hasMaster(@PathVariable String id){
         return sessionRepository.findById(id).orElse(null).getMaster() == null ? false : true;
     }
