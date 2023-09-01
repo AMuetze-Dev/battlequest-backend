@@ -15,6 +15,8 @@ public class Player {
 	private Long id;
 	@Column(length = 32)
 	private String username;
+	@Column(length = 32)
+	private String nickname;
 	private int points;
 	private String password;
 
@@ -29,6 +31,8 @@ public class Player {
 	public Long getId() {
 		return id;
 	}
+
+	public String getNickname() { return nickname; }
 
 	public String getPassword() {
 		return password;
@@ -45,6 +49,8 @@ public class Player {
 	public void setId(Long id) {
 		this.id = id;
 	}
+
+	public void setNickname(String nickname) { this.nickname = nickname; }
 
 	public void setPassword(String password) {
 		this.password = password;

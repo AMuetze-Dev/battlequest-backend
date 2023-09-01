@@ -21,6 +21,14 @@ public class PlayerRessource {
 	@Autowired
 	private PlayerRepository playerRepository;
 
+	@GetMapping("/changePassword/{id}")
+	public Response changePassword(@PathVariable Long id, @RequestBody String newPassword){
+		//TODO: make sure they are validated first? @Aaron: where?
+		Player player = playerRepository.findById(id).orElse(null);
+		player.setPassword(newPassword);
+		playerRepository.save(player);
+		return new Response("The password was changed successfully.", true);
+	}
 	@GetMapping("/validate")
 	public Response checkPassword(@RequestBody Credentials credentials) {
 		final Player player = getUser(credentials.getUsername());
@@ -31,7 +39,7 @@ public class PlayerRessource {
 		return new Response("Login was successful", true);
 	}
 
-	@PostMapping
+	@PostMapping("/create")
 	public Response createUser(@RequestBody Credentials credentials) {
 		final Player p = getUser(credentials.getUsername());
 		if (p == null) {
@@ -41,7 +49,21 @@ public class PlayerRessource {
 		return new Response("User already exists", false);
 	}
 
-	@DeleteMapping("/{id}")
+	@PutMapping("/decrease/{id}")
+	public Response decreasePoints(@PathVariable Long id, @RequestBody int number){
+		Player player = playerRepository.findById(id).orElse(null);
+		if(player == null)
+			return new Response("There is no such player.", false);
+		if(number > player.getPoints()) {
+			resetPoints(id);
+			return new Response("Points were set to 0 because there weren't enough points left.", false);
+		}
+		player.setPoints(player.getPoints() - number);
+		playerRepository.save(player);
+		return new Response(number + " points were subtracted successfully.", true);
+	}
+
+	@DeleteMapping("/delete/{id}")
 	public Response deleteUser(@PathVariable Long id) {
 		final Player player = getUser(id);
 		if (player != null) {
@@ -51,6 +73,7 @@ public class PlayerRessource {
 		return new Response("User does not exist", false);
 	}
 
+	//TODO: delete because there are no usages?
 	public PlayerRepository getPlayerRepository() {
 		return playerRepository;
 	}
@@ -65,13 +88,31 @@ public class PlayerRessource {
 		return playerRepository.findByUsername(username);
 	}
 
-	@PutMapping("/{id}")
-	public Response modifyUsername(@PathVariable Long id, @RequestBody String newUsername) {
+	@PutMapping("/increase/{id}")
+	public Response increasePoints(@PathVariable Long id, @RequestBody int number){
+		Player player = playerRepository.findById(id).orElse(null);
+		if(player == null)
+			return new Response("There is no such player.", false);
+		player.setPoints(player.getPoints() + number);
+		playerRepository.save(player);
+		return new Response(number + " points were added successfully.", true);
+	}
+
+	@PutMapping("/rename/{id}")
+	public Response modifyNickname(@PathVariable Long id, @RequestBody String newNickname) {
 		final Player player = getUser(id);
 		if (player == null)
 			return new Response("User does not exist", false);
-		player.setUsername(newUsername);
+		player.setNickname(newNickname);
 		playerRepository.save(player);
 		return new Response("Username of " + player.getUsername() + " was modified successfully.", true);
+	}
+
+	@PutMapping("/reset")
+	public Response resetPoints(Long id){
+		Player player = playerRepository.findById(id).orElse(null);
+		player.setPoints(0);
+		playerRepository.save(player);
+		return new Response("Points were reset successfully.", true);
 	}
 }
