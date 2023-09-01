@@ -22,6 +22,8 @@ public class SPRessource {
     @Autowired
     private PlayerRessource playerRessource;
 
+    //
+
     @PostMapping("/{id}")
     public Response addPlayer(@PathVariable String id, @RequestBody String username){
         if(checkValidity(id, username) == false)
