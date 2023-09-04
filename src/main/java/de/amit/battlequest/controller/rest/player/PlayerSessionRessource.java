@@ -3,14 +3,14 @@ package de.amit.battlequest.controller.rest.player;
 import de.amit.battlequest.model.Player;
 import de.amit.battlequest.model.Response;
 import de.amit.battlequest.model.Session;
+import de.amit.battlequest.controller.rest.session.SessionRessource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/{uuid}/session")
-public class SessionRessource {
+public class PlayerSessionRessource {
 
     @Autowired
     private PlayerRessource playerRessource;
@@ -19,13 +19,12 @@ public class SessionRessource {
     private PlayerRepository playerRepository;
 
     @Autowired
-    private  de.amit.battlequest.controller.rest.session.SessionRessource sessionRessource;
+    private  SessionRessource sessionRessource;
 
     private boolean checkSP(String code, UUID uuid) {
         return (playerRessource.read(uuid) == null || sessionRessource.read(code) == null) ? false : true;
     }
 
-    @DeleteMapping
     public Response delete(@PathVariable UUID uuid){
         Player player = playerRessource.read(uuid);
         if(player == null)
@@ -35,7 +34,6 @@ public class SessionRessource {
         return new Response(true, "Lobby wurde erfolgreich im Spieler gelöscht.");
     }
 
-    @PutMapping("/{code}")
     public Response update(@PathVariable UUID uuid, String code){
         Player player = playerRessource.read(uuid);
         Session session = sessionRessource.read(code);

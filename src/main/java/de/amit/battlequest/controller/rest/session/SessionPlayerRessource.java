@@ -1,37 +1,31 @@
 package de.amit.battlequest.controller.rest.session;
 
+import de.amit.battlequest.controller.rest.player.PlayerSessionRessource;
+import de.amit.battlequest.controller.rest.player.PlayerRessource;
 import de.amit.battlequest.model.Player;
 import de.amit.battlequest.model.Response;
 import de.amit.battlequest.model.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.UUID;
 
 @RestController
 @RequestMapping("/session/{code}/players")
-public class PlayerRessource {
+public class SessionPlayerRessource {
 
     @Autowired
     private SessionRepository sessionRepository;
 
     @Autowired
-    private de.amit.battlequest.controller.rest.player.PlayerRessource playerRessource;
+    private PlayerRessource playerRessource;
 
     @Autowired
-    private de.amit.battlequest.controller.rest.player.SessionRessource playerSessionRessource;
+    private PlayerSessionRessource playerSessionRessource;
 
     @Autowired
     private SessionRessource sessionRessource;
 
-    private void addPlayer(Session session, Player player) {
-        List<Player> players = session.getPlayers();
-        if(!players.contains(player))
-            players.add(player);
-        session.setPlayers(players);
-        sessionRepository.save(session);
-    }
 
     private boolean checkAllSessions(Player player, Session session) {
         return (player.getSession() == null || player.getSession() != session) ? false : true;
@@ -50,16 +44,7 @@ public class PlayerRessource {
         if(!checkAllSessions(player, session))
             return new Response(false, "Spieler ist in einer anderen Lobby.");
         playerSessionRessource.delete(uuid);
-        removePlayer(session, player);
         return new Response(true, "Spieler wurde erfolgreich aus der Lobby entfernt.");
-    }
-
-    private void removePlayer(Session session, Player player) {
-        List<Player> players = session.getPlayers();
-        if(players.contains(player))
-            players.remove(player);
-        session.setPlayers(players);
-        sessionRepository.save(session);
     }
 
     @PutMapping("{uuid}")
@@ -71,7 +56,6 @@ public class PlayerRessource {
         if(!checkAllSessions(player, session))
             return new Response(false, "Spieler ist bereits in einer anderen Lobby.");
         playerSessionRessource.update(uuid, code);
-        addPlayer(session, player);
         sessionRepository.save(session);
         return new Response(true, "Spieler wurde erfolgreich der Lobby hinzugefügt.");
     }

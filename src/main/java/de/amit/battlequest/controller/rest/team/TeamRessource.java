@@ -6,6 +6,8 @@ import de.amit.battlequest.model.Team;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/teams")
 public class TeamRessource {
@@ -23,8 +25,8 @@ public class TeamRessource {
         return !(team == null || teamRepository.findByName(name) != null);
     }
 
-    public boolean checkUser(Long id, String name){
-        return !(read(id) == null || playerRessource.read(name) == null);
+    public boolean checkUser(Long id, UUID uuid){
+        return !(read(id) == null || playerRessource.read(uuid) == null);
     }
 
     @PostMapping

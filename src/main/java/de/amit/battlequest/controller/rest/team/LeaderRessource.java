@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/teams/{id}/leader")
@@ -53,12 +54,12 @@ public class LeaderRessource {
         return new Response(true, team.getLeader() + " wurde zum Leader ernannt.");
     }
 
-    @PutMapping
-    public Response update(@PathVariable Long id, @RequestBody String username){
-        if(!teamRessource.checkUser(id, username))
+    @PutMapping("/{uuid}")
+    public Response update(@PathVariable Long id, UUID uuid){
+        if(!teamRessource.checkUser(id, uuid))
             return new Response(false, "Dieser Spieler ist kein Mitglied des Teams.");
         Team team = teamRessource.read(id);
-        team.setLeader(playerRessource.read(username));
+        team.setLeader(playerRessource.read(uuid));
         teamRepository.save(team);
         return new Response( true, "Der Spieler wurde als Leader gesetzt.");
     }
