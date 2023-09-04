@@ -1,9 +1,11 @@
-package de.amit.battlequest.controller.login;
+package de.amit.battlequest.controller.rest.player;
+
+import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import de.amit.battlequest.model.Player;
 
-public interface PlayerRepository extends JpaRepository<Player, Long> {
+public interface PlayerRepository extends JpaRepository<Player, UUID> {
 	public Player findByUsername(String username);
 }
