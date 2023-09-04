@@ -33,16 +33,22 @@ public class PlayerRessource {
         sessionRepository.save(session);
     }
 
+    private boolean checkAllSessions(Player player, Session session) {
+        return (player.getSession() == null || player.getSession() != session) ? false : true;
+    }
+
     private boolean checkSP(String code, UUID uuid) {
         return (playerRessource.read(uuid) == null || sessionRessource.read(code) == null) ? false : true;
     }
 
     @DeleteMapping("{uuid}")
     public Response delete(@PathVariable String code, UUID uuid){
-        if(!checkSP(code, uuid))
-            return new Response(false, "Spieler oder Lobby ist nicht verfügbar.");
         Player player = playerRessource.read(uuid);
         Session session = sessionRessource.read(code);
+        if(!checkSP(code, uuid))
+            return new Response(false, "Spieler oder Lobby ist nicht verfügbar.");
+        if(!checkAllSessions(player, session))
+            return new Response(false, "Spieler ist in einer anderen Lobby.");
         playerSessionRessource.delete(uuid);
         removePlayer(session, player);
         return new Response(true, "Spieler wurde erfolgreich aus der Lobby entfernt.");
@@ -58,10 +64,12 @@ public class PlayerRessource {
 
     @PutMapping("{uuid}")
     public Response update(@PathVariable String code, UUID uuid){
-        if(!checkSP(code, uuid))
-            return new Response(false, "Spieler oder Lobby ist nicht verfügbar.");
         Player player = playerRessource.read(uuid);
         Session session = sessionRessource.read(code);
+        if(!checkSP(code, uuid))
+            return new Response(false, "Spieler oder Lobby ist nicht verfügbar.");
+        if(!checkAllSessions(player, session))
+            return new Response(false, "Spieler ist bereits in einer anderen Lobby.");
         playerSessionRessource.update(uuid, code);
         addPlayer(session, player);
         sessionRepository.save(session);
