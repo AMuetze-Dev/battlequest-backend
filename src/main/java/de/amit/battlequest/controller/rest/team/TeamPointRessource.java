@@ -10,7 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/teams/{id}/points")
-public class PointRessource {
+public class TeamPointRessource {
 
     @Autowired
     private TeamRessource teamRessource;

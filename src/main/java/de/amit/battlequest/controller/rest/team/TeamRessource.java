@@ -22,7 +22,7 @@ public class TeamRessource {
 
     public boolean checkName(Long id, String name){
         Team team = read(id);
-        return !(team == null || teamRepository.findByName(name) != null);
+        return !(team == null || teamRepository.findByTeamname(name) != null);
     }
 
     public boolean checkUser(Long id, UUID uuid){
@@ -51,6 +51,6 @@ public class TeamRessource {
 
     @GetMapping
     public Team read(@RequestBody String name){
-        return teamRepository.findByName(name);
+        return teamRepository.findByTeamname(name);
     }
 }
