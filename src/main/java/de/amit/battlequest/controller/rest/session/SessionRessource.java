@@ -38,5 +38,4 @@ public class SessionRessource {
 	public Session read(@PathVariable String code) {
 		return sessionRepository.findById(code).orElse(null);
 	}
-
 }

@@ -1,7 +1,6 @@
 package de.amit.battlequest.controller.rest.team;
 
 import de.amit.battlequest.controller.rest.player.PlayerRessource;
-import de.amit.battlequest.model.Player;
 import de.amit.battlequest.model.Response;
 import de.amit.battlequest.model.Team;
 import org.springframework.beans.factory.annotation.Autowired;

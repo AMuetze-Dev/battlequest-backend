@@ -29,7 +29,7 @@ public class PlayerRessource {
         Player player = playerRessource.read(username);
         Team team = teamRessource.read(id);
         if(!teamRessource.checkUser(id, username))
-            return new Response(false, "Session oder Spieler ist nicht verfügbar.");
+            return new Response(false, "Lobby oder Spieler ist nicht verfügbar.");
         if(player.getTeam() != null)
             return new Response(false,"Spieler ist schon Teil eines Teams.");
         player.setTeam(team);

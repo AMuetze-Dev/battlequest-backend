@@ -29,11 +29,9 @@ public class Player {
 	private String nickname;
 	private int points;
 	private String password;
-
 	@ManyToOne
 	@JoinColumn(name = "session_code")
 	private Session session;
-
 	@ManyToOne
 	@JoinColumn(name = "team_uuid")
 	private Team team;
