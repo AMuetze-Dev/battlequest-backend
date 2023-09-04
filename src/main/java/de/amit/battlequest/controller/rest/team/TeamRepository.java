@@ -1,4 +1,4 @@
-package de.amit.battlequest.controller.team;
+package de.amit.battlequest.controller.rest.team;
 
 import de.amit.battlequest.model.Player;
 import de.amit.battlequest.model.Team;

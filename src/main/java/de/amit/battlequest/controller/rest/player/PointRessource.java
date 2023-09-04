@@ -56,7 +56,7 @@ public class PointRessource {
 		return new Response(true, "Die Punkte wurden erfolgreich gesetzt");
 	}
 
-	private Response update(UUID uuid, int delta) {
+	public Response update(UUID uuid, int delta) {
 		final Player player = playerRepository.findById(uuid).orElse(null);
 		if (player == null)
 			return new Response(false, "Der angegebene Spieler konnte nicht gefunden werden");
