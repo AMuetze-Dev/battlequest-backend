@@ -34,6 +34,10 @@ public class Player {
 	@JoinColumn(name = "session_code")
 	private Session session;
 
+	@ManyToOne
+	@JoinColumn(name = "team_uuid")
+	private Team team;
+
 	public Player(String username, String password) {
 		this.username = username;
 		nickname = "DummyUser" + new Random().nextInt(10000, 99999);
@@ -49,6 +53,9 @@ public class Player {
 	public Session getSession() {
 		return session;
 	}
+
+	@JsonIgnore
+	public Team getTeam() { return team; }
 
 	@JsonIgnore
 	public String getUsername() {
