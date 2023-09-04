@@ -1,69 +1,57 @@
 package de.amit.battlequest.model;
 
-import jakarta.persistence.*;
+import java.util.Random;
+import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@NoArgsConstructor
+@Getter
+@Setter
 @Entity
-@Table(name = "players")
 public class Player {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	@JoinColumn(name = "team_id")
-	private Team team;
-	@Column(length = 32)
+	@GeneratedValue(strategy = GenerationType.UUID)
+	private UUID uuid;
 	private String username;
 	@Column(length = 32)
 	private String nickname;
 	private int points;
 	private String password;
 
-	public Player() {
-	}
+	@ManyToOne
+	@JoinColumn(name = "session_code")
+	private Session session;
 
 	public Player(String username, String password) {
 		this.username = username;
+		nickname = "DummyUser" + new Random().nextInt(10000, 99999);
 		this.password = password;
 	}
 
-	//
-
-	public Long getId() {
-		return id;
-	}
-
-	public String getNickname() { return nickname; }
-
+	@JsonIgnore
 	public String getPassword() {
 		return password;
 	}
 
-	public int getPoints() {
-		return points;
+	@JsonIgnore
+	public Session getSession() {
+		return session;
 	}
 
-	public Team getTeam() { return team; }
-
+	@JsonIgnore
 	public String getUsername() {
 		return username;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public void setNickname(String nickname) { this.nickname = nickname; }
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public void setPoints(int points) {
-		this.points = points;
-	}
-
-	public void setTeam(Team team) { this.team = team; }
-
-	public void setUsername(String username) {
-		this.username = username;
 	}
 }

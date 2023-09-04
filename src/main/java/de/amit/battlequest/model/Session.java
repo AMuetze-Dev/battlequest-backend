@@ -1,43 +1,34 @@
 package de.amit.battlequest.model;
 
-import jakarta.persistence.*;
+import java.util.List;
+import java.util.Random;
+import java.util.stream.Collectors;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 @Entity
-@Table(name = "sessions")
 public class Session {
-    @Id
-    @Column(length=8)
-    private String sessionId;
-    @ManyToOne
-    @JoinColumn(name = "master_id")
-    private Player master;
+	@Id
+	@Column(length = 8)
+	private String code;
+	@ManyToOne
+	@JoinColumn(name = "master_id")
+	private Player master;
 
-    //
+	@OneToMany(mappedBy = "session")
+	private List<Player> players;
 
-    public Session () {
-        this.sessionId = generateKey();
-    }
-
-    //
-
-    public Player getMaster() { return master; }
-
-    public String getSessionId() { return sessionId; }
-
-    public void setMaster(Player master) { this.master= master; }
-
-    public void setSessionId(String sessionId) { this.sessionId = sessionId; }
-
-    //
-
-    public String generateKey(){
-        char[] ALPHANUMERIC ="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".toCharArray();
-        StringBuilder random = new StringBuilder();
-        for(int i = 0; i < 8; i++){
-            int length = ALPHANUMERIC.length - 1;
-            int index = (int) (Math.random() * (length));
-            random.append(ALPHANUMERIC[index]);
-        }
-        return random.toString();
-    }
+	public Session() {
+		code = new Random().ints(8, 0, 36).mapToObj(i -> Character.toString(i < 10 ? '0' + i : 'A' + i - 10))
+				.collect(Collectors.joining()).toUpperCase();
+	}
 }
