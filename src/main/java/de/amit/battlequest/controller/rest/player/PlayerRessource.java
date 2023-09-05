@@ -27,7 +27,7 @@ public class PlayerRessource {
 		if (read(credentials.getUsername()) != null)
 			return new Response(false, "Spieler existiert bereits");
 		playerRepository.save(credentials.createPlayer());
-		return new Response(true, "Nutzer wurde angelegt");
+		return new Response(true, "Spieler wurde angelegt");
 	}
 
 	@DeleteMapping("/{uuid}")
@@ -45,6 +45,6 @@ public class PlayerRessource {
 
 	@GetMapping("/{uuid}")
 	public Player read(@PathVariable UUID uuid) {
-		return playerRepository.findById(uuid).orElse(null);
+		return playerRepository.findByUuid(uuid);
 	}
 }
