@@ -56,7 +56,7 @@ public class NicknameRessourceTest {
 
     @Test
         void testReadSuccess() throws Exception {
-        final Player mockPlayer = new Player(uuid, "testUser", "DummyUser12345", 0, "password", null);
+        final Player mockPlayer = new Player(uuid, "testUser", "DummyUser12345", 0, "password", null, null);
 
         Mockito.when(playerRessource.read(Mockito.any(UUID.class))).thenReturn(mockPlayer);
 
@@ -87,7 +87,7 @@ public class NicknameRessourceTest {
 
     @Test
     void testUpdateSuccess() throws Exception {
-        final Player mockPlayer = new Player(uuid, "testUser", "DummyUser12345", 0, "password", null);
+        final Player mockPlayer = new Player(uuid, "testUser", "DummyUser12345", 0, "password", null, null);
 
         Mockito.when(playerRessource.read(uuid)).thenReturn(mockPlayer);
 
