@@ -62,7 +62,7 @@ public class PasswordRessourceTest {
     void testChangeWrongFailure() throws Exception {
         final UUID uuid = UUID.randomUUID();
 
-        final Player mockPlayer = new Player(uuid, "testUser", "DummyUser12345", 0, "password", null);
+        final Player mockPlayer = new Player(uuid, "testUser", "DummyUser12345", 0, "password", null, null);
 
         Mockito.when(playerRessource.read(uuid)).thenReturn(mockPlayer);
 
@@ -82,7 +82,7 @@ public class PasswordRessourceTest {
     void testChangeSuccess() throws Exception {
         final UUID uuid = UUID.randomUUID();
 
-        final Player mockPlayer = new Player(uuid, "testUser", "DummyUser12345", 0, "password", null);
+        final Player mockPlayer = new Player(uuid, "testUser", "DummyUser12345", 0, "password", null, null);
 
         Mockito.when(playerRessource.read(uuid)).thenReturn(mockPlayer);
 
@@ -116,7 +116,7 @@ public class PasswordRessourceTest {
 
     @Test
     void testValidateSuccess() throws Exception {
-        final Player mockPlayer = new Player(UUID.randomUUID(), "testUser", "DummyUser12345", 0, "password", null);
+        final Player mockPlayer = new Player(UUID.randomUUID(), "testUser", "DummyUser12345", 0, "password", null, null);
         final Credentials credentials = new Credentials(mockPlayer.getUsername(), mockPlayer.getPassword(), "");
 
         Mockito.when(playerRessource.read(credentials.getUsername())).thenReturn(mockPlayer);
