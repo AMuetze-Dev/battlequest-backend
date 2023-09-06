@@ -36,7 +36,7 @@ public class SessionRessource {
 
 	@GetMapping("/{code}")
 	public Session read(@PathVariable String code) {
-		return sessionRepository.findById(code).orElse(null);
+		return sessionRepository.findByCode(code);
 	}
 
 }
