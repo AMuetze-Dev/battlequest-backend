@@ -52,7 +52,7 @@ public class LoginRessourceTest {
 
 	@Test
 	void testLoginSuccess() throws Exception {
-		final Player mockPlayer = new Player(UUID.randomUUID(), "testUser", "DummyUser12345", 0, "password", null);
+		final Player mockPlayer = new Player(UUID.randomUUID(), "testUser", "DummyUser12345", 0, "password", null, null);
 
 		Mockito.when(playerRessource.read(Mockito.anyString())).thenReturn(mockPlayer);
 		Mockito.when(passwordRessource.validate(Mockito.any(Credentials.class))).thenReturn(true);
