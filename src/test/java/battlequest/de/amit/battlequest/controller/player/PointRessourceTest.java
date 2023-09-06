@@ -58,7 +58,7 @@ public class PointRessourceTest {
 
     @Test
     void testDecreaseSuccess() throws Exception {
-        final Player mockPlayer = new Player(uuid, "testUser", "DummyUser12345", 10, "password", null);
+        final Player mockPlayer = new Player(uuid, "testUser", "DummyUser12345", 10, "password", null, null);
 
         Mockito.when(playerRessource.read(uuid)).thenReturn(mockPlayer);
 
@@ -90,7 +90,7 @@ public class PointRessourceTest {
 
     @Test
     void testGetSuccess() throws Exception {
-        final Player mockPlayer = new Player(uuid, "testUser", "DummyUser12345", 10, "password", null);
+        final Player mockPlayer = new Player(uuid, "testUser", "DummyUser12345", 10, "password", null, null);
 
         Mockito.when(playerRessource.read(uuid)).thenReturn(mockPlayer);
 
@@ -120,7 +120,7 @@ public class PointRessourceTest {
 
     @Test
     void testIncreaseSuccess() throws Exception {
-        final Player mockPlayer = new Player(uuid, "testUser", "DummyUser12345", 10, "password", null);
+        final Player mockPlayer = new Player(uuid, "testUser", "DummyUser12345", 10, "password", null, null);
 
         Mockito.when(playerRessource.read(uuid)).thenReturn(mockPlayer);
 
@@ -154,7 +154,7 @@ public class PointRessourceTest {
 
     @Test
     void testResetSuccess() throws Exception {
-        final Player mockPlayer = new Player(uuid, "testUser", "DummyUser12345", 10, "password", null);
+        final Player mockPlayer = new Player(uuid, "testUser", "DummyUser12345", 10, "password", null, null);
 
         Mockito.when(playerRessource.read(uuid)).thenReturn(mockPlayer);
 
@@ -189,7 +189,7 @@ public class PointRessourceTest {
 
     @Test
     void testSetSuccess() throws Exception {
-        final Player mockPlayer = new Player(uuid, "testUser", "DummyUser12345", 10, "password", null);
+        final Player mockPlayer = new Player(uuid, "testUser", "DummyUser12345", 10, "password", null, null);
 
         Mockito.when(playerRessource.read(uuid)).thenReturn(mockPlayer);
 
