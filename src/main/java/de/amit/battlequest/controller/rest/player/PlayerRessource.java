@@ -45,6 +45,6 @@ public class PlayerRessource {
 
 	@GetMapping("/{uuid}")
 	public Player read(@PathVariable UUID uuid) {
-		return playerRepository.findById(uuid).orElse(null);
+		return playerRepository.findByUuid(uuid);
 	}
 }

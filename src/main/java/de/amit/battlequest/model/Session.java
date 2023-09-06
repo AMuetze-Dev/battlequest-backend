@@ -1,5 +1,6 @@
 package de.amit.battlequest.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -28,7 +29,12 @@ public class Session {
 	private List<Player> players;
 
 	public Session() {
-		code = new Random().ints(8, 0, 36).mapToObj(i -> Character.toString(i < 10 ? '0' + i : 'A' + i - 10))
+		code = generateSessionCode();
+		players = new ArrayList<>();
+	}
+
+	private String generateSessionCode() {
+		return new Random().ints(8, 0, 36).mapToObj(i -> Character.toString(i < 10 ? '0' + i : 'A' + i - 10))
 				.collect(Collectors.joining()).toUpperCase();
 	}
 }
