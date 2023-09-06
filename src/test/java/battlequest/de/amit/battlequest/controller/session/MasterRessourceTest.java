@@ -141,7 +141,7 @@ public class MasterRessourceTest {
     void testUpdateMasterIsFailure() throws Exception {
         UUID uuid = UUID.randomUUID();
 
-        final Player mockMaster = new Player(uuid, "testUser", "DummyUser12345", 0, "password", null);
+        final Player mockMaster = new Player(uuid, "testUser", "DummyUser12345", 0, "password", null, null);
 
         mockMaster.setSession(mockSession);
         mockSession.setMaster(mockMaster);
@@ -165,7 +165,7 @@ public class MasterRessourceTest {
     void testUpdateMasterIsNotFailure() throws Exception {
         UUID uuid = UUID.randomUUID();
 
-        final Player mockMaster = new Player(uuid, "testUser", "DummyUser12345", 0, "password", null);
+        final Player mockMaster = new Player(uuid, "testUser", "DummyUser12345", 0, "password", null, null);
 
         Session wrongSession = new Session();
 
@@ -192,7 +192,7 @@ public class MasterRessourceTest {
     void testUpdateSuccess() throws Exception {
         UUID uuid = UUID.randomUUID();
 
-        final Player mockMaster = new Player(uuid, "testUser", "DummyUser12345", 0, "password", null);
+        final Player mockMaster = new Player(uuid, "testUser", "DummyUser12345", 0, "password", null, null);
 
         mockMaster.setSession(mockSession);
 
