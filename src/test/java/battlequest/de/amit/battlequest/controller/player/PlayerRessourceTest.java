@@ -37,7 +37,7 @@ public class PlayerRessourceTest {
 
     @Test
     void testCreateFailure() throws Exception {
-        final Player mockPlayer = new Player(UUID.randomUUID(), "testUser", "DummyUser12345", 0, "password", null);
+        final Player mockPlayer = new Player(UUID.randomUUID(), "testUser", "DummyUser12345", 0, "password", null, null);
 
         Credentials credentials = new Credentials("testUser", "password", "");
 
@@ -98,7 +98,7 @@ public class PlayerRessourceTest {
     void testDeleteSuccess() throws Exception {
         UUID uuid = UUID.randomUUID();
 
-        final Player mockPlayer = new Player(uuid, "testUser", "DummyUser12345", 0, "password", null);
+        final Player mockPlayer = new Player(uuid, "testUser", "DummyUser12345", 0, "password", null, null);
 
         Mockito.when(playerRessource.read(uuid)).thenReturn(mockPlayer);
 
@@ -132,7 +132,7 @@ public class PlayerRessourceTest {
     void testReadSuccess() throws Exception {
         UUID uuid = UUID.randomUUID();
 
-        final Player mockPlayer = new Player(uuid, "testUser", "DummyUser12345", 0, "password", null);
+        final Player mockPlayer = new Player(uuid, "testUser", "DummyUser12345", 0, "password", null, null);
 
         Mockito.when(playerRessource.read(uuid)).thenReturn(mockPlayer);
 
