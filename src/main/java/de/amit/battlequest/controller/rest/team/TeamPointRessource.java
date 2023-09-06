@@ -1,5 +1,6 @@
 package de.amit.battlequest.controller.rest.team;
 
+import de.amit.battlequest.controller.rest.player.PointRessource;
 import de.amit.battlequest.model.Player;
 import de.amit.battlequest.model.Response;
 import de.amit.battlequest.model.Team;
@@ -16,7 +17,7 @@ public class TeamPointRessource {
     private TeamRessource teamRessource;
 
     @Autowired
-    private de.amit.battlequest.controller.rest.player.PointRessource playerPointRessource;
+    private PointRessource pointRessource;
 
     @PutMapping("/add")
     public Response add(@PathVariable Long id){
@@ -24,8 +25,10 @@ public class TeamPointRessource {
         if(team == null)
             return new Response(false, "Das Team ist nicht verfügbar.");
         List<Player> players = team.getPlayers();
+        if(players == null)
+            return new Response(false, "In diesem Team sind keine Spieler.");
         for(Player object : players){
-            playerPointRessource.increase(object.getUuid());
+            pointRessource.increase(object.getUuid());
         }
         return new Response(true, "Die Punkte wurden erfolgreich hinzugefügt.");
     }
@@ -36,20 +39,24 @@ public class TeamPointRessource {
         if(team == null)
             return new Response(false, "Das Team ist nicht verfügbar.");
         List<Player> players = team.getPlayers();
+        if(players == null)
+            return new Response(false, "In diesem Team sind keine Spieler.");
         for(Player object : players){
-            playerPointRessource.decrease(object.getUuid());
+            pointRessource.decrease(object.getUuid());
         }
         return new Response(true, "Die Punkte wurden erfolgreich abgezogen.");
     }
 
     @PutMapping("/update/{number}")
-    public Response update(@PathVariable Long id, int number){
+    public Response update(@PathVariable Long id, @PathVariable int number){
         Team team = teamRessource.read(id);
         if(team == null)
             return new Response(false, "Das Team ist nicht verfügbar.");
         List<Player> players = team.getPlayers();
+        if(players == null)
+            return new Response(false, "In diesem Team sind keine Spieler.");
         for(Player object : players){
-            playerPointRessource.update(object.getUuid(), number);
+            pointRessource.update(object.getUuid(), number);
         }
         return new Response(true, "Die Punkte wurden erfolgreich aktualisiert");
     }

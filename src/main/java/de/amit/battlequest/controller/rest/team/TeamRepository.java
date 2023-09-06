@@ -7,4 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface TeamRepository extends JpaRepository<Team, Long> {
     public Team findByLeader(Player leader);
     public Team findByTeamname(String name);
+    public Team findByTeamId(Long teamId);
 }

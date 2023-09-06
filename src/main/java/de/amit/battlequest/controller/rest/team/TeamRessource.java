@@ -1,6 +1,7 @@
 package de.amit.battlequest.controller.rest.team;
 
 import de.amit.battlequest.controller.rest.player.PlayerRessource;
+import de.amit.battlequest.model.Player;
 import de.amit.battlequest.model.Response;
 import de.amit.battlequest.model.Team;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,14 +27,14 @@ public class TeamRessource {
     }
 
     public boolean checkUser(Long id, UUID uuid){
-        return !(read(id) == null || playerRessource.read(uuid) == null);
+        return !(read(id) == null && playerRessource.read(uuid) == null);
     }
 
     @PostMapping
     public Response create(){
         Team team = new Team();
         teamRepository.save(team);
-        return new Response(false, "Team wurde erstellt.");
+        return new Response(true, "Team wurde erstellt.");
     }
 
     @DeleteMapping("/{id}")
@@ -44,9 +45,15 @@ public class TeamRessource {
         return new Response(true,  "Team wurde gelöscht.");
     }
 
+    public Team getTeam(Player player) {
+        if(player.getTeam() == null)
+            return null;
+        return player.getTeam();
+    }
+
     @GetMapping("/{id}")
     public Team read(@PathVariable Long id){
-        return teamRepository.findById(id).orElse(null);
+        return teamRepository.findByTeamId(id);
     }
 
     @GetMapping

@@ -20,20 +20,21 @@ public class TeamPlayerRessource {
     private PlayerRessource playerRessource;
 
     @DeleteMapping
-    public Response delete(@PathVariable Long id, UUID uuid){
+    public Response delete(@PathVariable Long id, @PathVariable  UUID uuid){
+        Player player = playerRessource.read(uuid);
         if(!teamRessource.checkUser(id, uuid))
             return new Response(false, "Team oder Spieler ist nicht verfügbar.");
-        playerRessource.read(uuid).setTeam(null);
+        player.setTeam(null);
         return new Response(true, "Der Spieler wurde entfernt.");
     }
 
     @PutMapping
-    public Response update(@PathVariable Long id, UUID uuid){
+    public Response update(@PathVariable Long id, @PathVariable UUID uuid){
         Player player = playerRessource.read(uuid);
         Team team = teamRessource.read(id);
         if(!teamRessource.checkUser(id, uuid))
             return new Response(false, "Lobby oder Spieler ist nicht verfügbar.");
-        if(player.getTeam() != null)
+        if(teamRessource.getTeam(player) != null)
             return new Response(false,"Spieler ist schon Teil eines Teams.");
         player.setTeam(team);
         return new Response(true, "Spieler wurde erfolgreich zum Team hinzugefügt." );
