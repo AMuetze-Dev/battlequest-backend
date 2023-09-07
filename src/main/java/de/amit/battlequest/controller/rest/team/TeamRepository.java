@@ -4,8 +4,9 @@ import de.amit.battlequest.model.Player;
 import de.amit.battlequest.model.Team;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Optional;
+
 public interface TeamRepository extends JpaRepository<Team, Long> {
-    public Team findByLeader(Player leader);
-    public Team findByTeamname(String name);
-    public Team findByTeamId(Long teamId);
+    public Object findByTeamname(String name);
+    public Object findByTeamId(Long teamId);
 }

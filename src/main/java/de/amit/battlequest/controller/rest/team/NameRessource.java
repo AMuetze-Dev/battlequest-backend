@@ -18,8 +18,10 @@ public class NameRessource {
     @PutMapping
     public Response update(@PathVariable Long id, @RequestBody String name){
         Team team = teamRessource.read(id);
-        if(!teamRessource.checkName(id, name))
-            return new Response(false, "Team oder Name ist nicht verfügbar.");
+        if(team == null)
+            return new Response(false, "Das Team existiert nicht.");
+        if((teamRessource.read(teamRessource.readName(name))) != null)
+            return new Response(false, "Der Name ist schon vergeben.");
         team.setTeamname(name);
         teamRepository.save(team);
         return new Response(true, "Teamname wurde geändert.");

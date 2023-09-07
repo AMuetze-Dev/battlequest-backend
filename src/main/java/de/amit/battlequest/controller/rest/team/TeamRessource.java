@@ -7,6 +7,7 @@ import de.amit.battlequest.model.Team;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -45,19 +46,46 @@ public class TeamRessource {
         return new Response(true,  "Team wurde gelöscht.");
     }
 
+    public Player getLeader(Long id) {
+        return read(id).getLeader();
+    }
+
+    public int getNumberPlayers(Team team) {
+        return team.getPlayers().size();
+    }
+
+    public List<Player> getPlayers(Team team) {
+        return team.getPlayers();
+    }
+
     public Team getTeam(Player player) {
-        if(player.getTeam() == null)
-            return null;
         return player.getTeam();
     }
 
     @GetMapping("/{id}")
     public Team read(@PathVariable Long id){
-        return teamRepository.findByTeamId(id);
+        Object team = teamRepository.findByTeamId(id);
+        if(team == null)
+            return null;
+        return (Team) teamRepository.findByTeamId(id);
     }
 
     @GetMapping
     public Team read(@RequestBody String name){
-        return teamRepository.findByTeamname(name);
+        Object team = teamRepository.findByTeamname(name);
+        if(team == null)
+            return null;
+        return (Team) teamRepository.findByTeamname(name);
+    }
+
+    public Team readId(Long id) {
+        return teamRepository.findById(id).orElse(null);
+    }
+
+    public Long readName(String name){
+        Object team = teamRepository.findByTeamname(name);
+        if(team == null)
+            return null;
+        return ((Team) teamRepository.findByTeamname(name)).getTeamId();
     }
 }
