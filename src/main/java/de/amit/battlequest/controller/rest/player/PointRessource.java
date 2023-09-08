@@ -20,6 +20,9 @@ public class PointRessource {
 	@Autowired
 	private PlayerRepository playerRepository;
 
+	@Autowired
+	private PlayerRessource playerRessource;
+
 	@PutMapping("/decrease")
 	public Response decrease(@PathVariable UUID uuid) {
 		return update(uuid, -1);
@@ -27,7 +30,7 @@ public class PointRessource {
 
 	@GetMapping
 	public int get(@PathVariable UUID uuid) {
-		final Player player = playerRepository.findById(uuid).orElse(null);
+		final Player player = playerRessource.read(uuid);
 		return player == null ? -1 : player.getPoints();
 	}
 
@@ -38,7 +41,7 @@ public class PointRessource {
 
 	@PutMapping("/reset")
 	public Response reset(@PathVariable UUID uuid) {
-		final Player player = playerRepository.findById(uuid).orElse(null);
+		final Player player = playerRessource.read(uuid);
 		if (player == null)
 			return new Response(false, "Der angegebene Spieler konnte nicht gefunden werden");
 		player.setPoints(0);
@@ -48,7 +51,7 @@ public class PointRessource {
 
 	@PutMapping("/set")
 	public Response set(@PathVariable UUID uuid, @RequestBody int amount) {
-		final Player player = playerRepository.findById(uuid).orElse(null);
+		final Player player = playerRessource.read(uuid);
 		if (player == null)
 			return new Response(false, "Der angegebene Spieler konnte nicht gefunden werden");
 		player.setPoints(amount);
@@ -56,8 +59,8 @@ public class PointRessource {
 		return new Response(true, "Die Punkte wurden erfolgreich gesetzt");
 	}
 
-	private Response update(UUID uuid, int delta) {
-		final Player player = playerRepository.findById(uuid).orElse(null);
+	public Response update(UUID uuid, Integer delta) {
+		final Player player = playerRessource.read(uuid);
 		if (player == null)
 			return new Response(false, "Der angegebene Spieler konnte nicht gefunden werden");
 

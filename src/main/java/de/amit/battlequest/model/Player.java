@@ -12,27 +12,31 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 @Entity
 public class Player {
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
-	private UUID uuid;
+	private UUID uuid = UUID.randomUUID();
 	private String username;
 	@Column(length = 32)
 	private String nickname;
 	private int points;
 	private String password;
-
 	@ManyToOne
 	@JoinColumn(name = "session_code")
 	private Session session;
+	@ManyToOne
+	@JoinColumn(name = "team_uuid")
+	private Team team;
 
 	public Player(String username, String password) {
 		this.username = username;
@@ -49,6 +53,9 @@ public class Player {
 	public Session getSession() {
 		return session;
 	}
+
+	@JsonIgnore
+	public Team getTeam() { return team; }
 
 	@JsonIgnore
 	public String getUsername() {

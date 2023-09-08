@@ -26,7 +26,7 @@ public class PasswordRessource {
 
 	@PutMapping("/{uuid}")
 	public Response changePassword(@PathVariable UUID uuid, @RequestBody Credentials credentials) {
-		final Player player = playerRepository.findById(uuid).orElse(null);
+		final Player player = playerRessource.read(uuid);
 		if (player == null)
 			return new Response(false, "Der angegebene Spieler konnte nicht gefunden werden");
 		if (!player.getPassword().equals(credentials.getPassword()))

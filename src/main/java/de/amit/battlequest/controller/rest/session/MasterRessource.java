@@ -50,6 +50,8 @@ public class MasterRessource {
 			return new Response(false, "Spielleiter existiert nicht");
 		if (session.getMaster() != null && session.getMaster().getUuid().equals(masterUuid))
 			return new Response(false, "Ist bereits Spielleiter der Lobby");
+		if(playerRessource.read(masterUuid).getSession() != session)
+			return new Response(false, "Spielleiter gehört einer anderen Lobby an");
 		session.setMaster(master);
 		sessionRepository.save(session);
 		return new Response(true, "Spielleiter wurde gesetzt");
